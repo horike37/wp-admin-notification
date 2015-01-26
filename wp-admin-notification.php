@@ -3,7 +3,7 @@
 Plugin Name: WP Admin Notification
 Plugin URI: http://digitalcube.jp
 Description: Show message from administrator
-Author: Digitalcube
+Author: horike
 Version: 1.0
 Author URI: http://digitalcube.jp
 
@@ -26,14 +26,15 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 if ( ! defined( 'WPAN_DOMAIN' ) )
-	define( 'WPAN_DOMAIN', '' );
+	define( 'WPAN_DOMAIN', 'wp-admin-notification' );
 	
 if ( ! defined( 'WPAN_PLUGIN_URL' ) )
 	define( 'WPAN_PLUGIN_URL', plugins_url() . '/' . dirname( plugin_basename( __FILE__ ) ));
 
 if ( ! defined( 'WPAN_PLUGIN_DIR' ) )
 	define( 'WPAN_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ));
-	
+
+load_plugin_textdomain( WPAN_DOMAIN, false, dirname(plugin_basename(__FILE__)) . '/languages' );
 class WP_Admin_Notification {
 	private static $instance;
 
