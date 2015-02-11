@@ -1,11 +1,4 @@
 # WP Admin Notification
-Contributors: horike,megumithemes
-Tags:feed, rss
-Requires at least: 4.0
-Tested up to: 4.1
-Stable tag: 1.0
-
-# Description
 This plugin display a notification message on for WordPress User on admin panel.
 If you find a bug, Please pull request [github](https://github.com/horike37/wp-admin-notification).
 
