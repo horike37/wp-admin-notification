@@ -54,6 +54,52 @@ class WP_Admin_Notification {
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'save_post', array( $this, 'save_meta_box' ) );
 		add_action( 'admin_notices', array( $this, 'admin_notices' ) );
+		add_action( 'wp_ajax_wpan_checked', array( $this, 'checked' ) );
+		add_filter( 'manage_users_columns', array( $this, 'manage_users_columns' ) );
+		add_filter( 'manage_users_custom_column', array( $this, 'manage_users_custom_column' ), 10, 3 );
+	}
+	
+	public function manage_users_custom_column( $val, $column_name, $user_id ) {
+		$messages = get_posts(array('post_type' => 'notification'));
+		
+		if ( empty($messages) )
+			return;
+			
+		foreach ( $messages as $message ) {
+			switch ($column_name) {
+				case 'wpan_'.$message->ID :
+					if ( get_user_meta( $user_id, 'wpan_'.$message->ID, true ) === '1' ) {
+						return '<img src="'.WPAN_PLUGIN_URL.'/img/check.png" />';
+					}
+					break;
+				default:
+			}
+			
+		}
+		
+		return $val;
+	}
+	
+	public function manage_users_columns( $column ) {
+		$messages = get_posts(array('post_type' => 'notification'));
+		
+		if ( empty($messages) )
+			return;
+			
+		foreach ( $messages as $message ) {
+			 $column['wpan_'.$message->ID] =  __( 'Notification', WPAN_DOMAIN ).'['.get_the_title($message->ID).']';
+		}
+		
+		return $column;
+	}
+	
+	public function checked() {
+		check_ajax_referer( 'wpan', 'security' );
+		
+		if ( isset($_POST['data_id']) && is_numeric($_POST['data_id']) ) {
+			$data_id = $_POST['data_id'];
+			update_user_meta( get_current_user_id(), 'wpan_'.$data_id, 1 );
+		}
 	}
 
 	public function admin_notices() {
@@ -64,6 +110,11 @@ class WP_Admin_Notification {
 		
 		foreach ( $messages as $message ) {
 			$user = wp_get_current_user();
+			
+			if ( get_user_meta( $user->ID, 'wpan_'.$message->ID, true ) === '1' ) {
+				return false;
+			}
+			
 			$target_role = get_post_meta( $message->ID, 'wp_admin_notification_display_role', true );
 		
 			if ( is_object($user) ) {
@@ -80,8 +131,13 @@ class WP_Admin_Notification {
 			if ( strtotime(date_i18n('Y-m-d')) >= strtotime($term_start) && strtotime(date_i18n('Y-m-d')) <= strtotime($term_end) ) {
 
 ?>
-<div class="update-nag">
+<script>
+  var wpan_data_id = "<?php echo $message->ID; ?>"
+  var wpan_security = "<?php echo wp_create_nonce( 'wpan' ); ?>"
+</script>
+<div id="wp_admin_notification-<?php echo $message->ID ?>" class="updated">
     <?php echo apply_filters('the_content', $message->post_content); ?>
+    <?php submit_button( __('checked', WPAN_DOMAIN), 'secondary', 'wp_admin_notification_checked', array( 'data' => $message->ID ) ); ?>
 </div>
 <?php
 			}
@@ -115,7 +171,7 @@ class WP_Admin_Notification {
 	public function admin_enqueue_scripts() {
 		wp_enqueue_script( 'jquery' );
 		wp_enqueue_script( 'jquery-ui' );
-		wp_enqueue_script( 'jquery-datepicker' );
+		wp_enqueue_script( 'jquery-ui-datepicker' );
 		wp_enqueue_style( 'jquery-datepicker-css', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.11/themes/smoothness/jquery-ui.css');
 		wp_enqueue_script( 'wpan_common', plugins_url('js/common.js', __FILE__) );
 	}

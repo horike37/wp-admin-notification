@@ -6,7 +6,7 @@ Tested up to: 4.1
 Stable tag: 1.0
 
 == Description ==
-This plugin display a notification message on for WordPress User on admin panel.
+This plugin display a notification message for WordPress User on admin panel.
 If you find a bug, Please pull request [github](https://github.com/horike37/wp-admin-notification).
 
 = Translators =
@@ -28,6 +28,7 @@ gmail:horike37@gmail.com
 == Screenshots ==
 1. Editing Message.
 2. Show Message.
+3. Show checking user
 
 == Changelog ==
 = 1.0 =
