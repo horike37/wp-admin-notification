@@ -84,12 +84,12 @@ class WP_Admin_Notification {
 		$messages = get_posts(array('post_type' => 'notification'));
 		
 		if ( empty($messages) )
-			return;
-			
+			return $column;
+
 		foreach ( $messages as $message ) {
 			 $column['wpan_'.$message->ID] =  __( 'Notification', WPAN_DOMAIN ).'['.get_the_title($message->ID).']';
 		}
-		
+
 		return $column;
 	}
 	
