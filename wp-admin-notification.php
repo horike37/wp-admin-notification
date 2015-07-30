@@ -117,7 +117,7 @@ class WP_Admin_Notification {
 			
 			$target_role = get_post_meta( $message->ID, 'wp_admin_notification_display_role', true );
 		
-			if ( is_object($user) ) {
+			if ( is_object( $user ) and $target_role ) {
 				$target_role = array_map('strtolower', $target_role);
 				$compare = array_intersect($target_role, $user->roles);
 			}
