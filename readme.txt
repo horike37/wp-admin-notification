@@ -6,15 +6,15 @@ Tested up to: 4.1
 Stable tag: 1.0
 
 == Description ==
-This plugin display a notification message for WordPress User on admin panel.
-If you find a bug, Please pull request [github](https://github.com/horike37/wp-admin-notification).
+This plugin displays a notification message for WordPress User on admin panel.
+If you find a bug, please send a pull request [github](https://github.com/horike37/wp-admin-notification).
 
 = Translators =
 * Japanese(ja) - [Horike Takahiro](http://profiles.wordpress.org/horike)
 
 You can send your own language pack to me.
 
-Please contact to me.
+Please contact me.
 
 gmail:horike37@gmail.com
 
