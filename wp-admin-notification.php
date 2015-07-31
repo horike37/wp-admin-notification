@@ -84,12 +84,12 @@ class WP_Admin_Notification {
 		$messages = get_posts(array('post_type' => 'notification'));
 		
 		if ( empty($messages) )
-			return;
-			
+			return $column;
+
 		foreach ( $messages as $message ) {
 			 $column['wpan_'.$message->ID] =  __( 'Notification', WPAN_DOMAIN ).'['.get_the_title($message->ID).']';
 		}
-		
+
 		return $column;
 	}
 	
@@ -117,7 +117,7 @@ class WP_Admin_Notification {
 			
 			$target_role = get_post_meta( $message->ID, 'wp_admin_notification_display_role', true );
 		
-			if ( is_object($user) ) {
+			if ( is_object( $user ) and $target_role ) {
 				$target_role = array_map('strtolower', $target_role);
 				$compare = array_intersect($target_role, $user->roles);
 			}
